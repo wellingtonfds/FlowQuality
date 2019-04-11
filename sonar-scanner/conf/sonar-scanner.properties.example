@@ -7,13 +7,22 @@ sonar.host.url=http://localhost:9000
 #----- Default source code encoding
 sonar.sourceEncoding=UTF-8
 
-# must be unique in a given SonarQube instance
-sonar.projectKey=SPM365-2019
-# this is the name and version displayed in the SonarQube UI. Was mandatory prior to SonarQube 6.1.
-sonar.projectName=spm
-sonar.projectVersion=1.0
- 
-# Path is relative to the sonar-project.properties file. Replace "\" by "/" on Windows.
-# This property is optional if sonar.modules is set. 
-sonar.sources=.
+#base dir
 
+sonar.projectBaseDir=/home/wellington/Apps/spm/
+#token
+sonar.login=67e517ec42d2920fc5b37364b19ebad795302933
+# must be unique in a given SonarQube instance
+sonar.projectKey=spm365
+# this is the name and version displayed in the SonarQube UI. Was mandatory prior to SonarQube 6.1.
+sonar.projectName=SPM365
+sonar.projectVersion=1.0
+
+# Path is relative to the sonar-project.properties file. Replace "\" by "/" on Windows.
+# This property is optional if sonar.modules is set.
+sonar.sources=.
+sonar.exclusions=**/public/**,**/vendor/**,**/storage/**,**/node_modules/**,**/bootstrap/**,**/sonar-scanner/**,.env,.env.example,artisan.php,server.php,phpunit.xml,webpack.mix.js,**/tests/**
+sonar.tests=./tests
+
+#sonar.php.coverage.reportPath=phpunit.coverage.xml
+#sonar.php.tests.reportPath=phpunit.xml
