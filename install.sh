@@ -1,0 +1,1 @@
+git clone git@github.com:mantisbt/mantisbt.git mantisbt

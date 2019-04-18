@@ -1,3 +1,5 @@
 sonar-scanner/conf/sonar-scanner.properties
 db/
 .scannerwork
+mantisbt
+mantis-db/
