@@ -1,55 +1,48 @@
 version: "3"
 services:
-  web:
-    image: nginx:latest
+  db:
+    image: postgres
     restart: always
-    command: apt-get install php7.3-fpm php7.3-mysql \ 
-             php7.3-mbstring php7.3-zip php7.3-xml \
-             php7.3-curl php7.3-gd
-    ports:
-      - 81:80
     volumes:
-      - ./site.conf:/etc/nginx/conf.d/site.conf
-  
-  # db:
-  #   image: postgres
-  #   restart: always
-  #   volumes:
-  #     - ./db:/var/lib/postgresql/data
-  #   environment:
-  #     POSTGRES_PASSWORD: sonar
-  #     POSTGRES_USER: sonar
-  # sonarqube:
-  #   image: sonarqube
-  #   restart: always
-  #   ports:
-  #     - 9000:9000
-  #     - 9092:9092
-  #   depends_on:
-  #      - db
-  #   environment:
-  #     SONARQUBE_JDBC_USERNAME: sonar
-  #     SONARQUBE_JDBC_PASSWORD: sonar
-  #     SONARQUBE_JDBC_URL: jdbc:postgresql://db/sonar
-  # mantis:
-  #   image: mikroways/mantisbt
-  #   environment:
-  #     MANTIS_CONFIG: |
-  #       $$g_hostname = 'db-mysql';
-  #       $$g_db_type = 'mysqli';
-  #       $$g_database_name = 'mantis';
-  #       $$g_db_username = 'root';
-  #       $$g_db_password = 'mantis';
-  #       $$g_crypto_master_salt='2Dsjtn/rqqZPEy44vA9xN23l2i7js6KK2tXUre3nruzGq58zIwVNCLSty8ng35a60is03uQium8ag2pJnybUxA==';
-  #       $$g_log_level = LOG_EMAIL | LOG_EMAIL_RECIPIENT;
-  #       $$g_log_destination = '';
-  #   ports:
-  #     - "8081:80"
-  # db-mysql:
-  #   image: mysql:5.7
-  #   volumes:
-  #     - ./mantis-db:/var/lib/mysql
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: mantis
-  #     MYSQL_DATABASE: mantis=mantisbt
-  #   restart: always
+      - ./db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: sonar
+      POSTGRES_USER: sonar
+  sonarqube:
+    image: sonarqube
+    restart: always
+    ports:
+      - 9000:9000
+      - 9092:9092
+    depends_on:
+       - db
+    environment:
+      SONARQUBE_JDBC_USERNAME: sonar
+      SONARQUBE_JDBC_PASSWORD: sonar
+      SONARQUBE_JDBC_URL: jdbc:postgresql://db/sonar
+  mantis:
+    image: mikroways/mantisbt
+    environment:
+      #MANTIS_ENABLE_ADMIN: 1
+      MANTIS_CONFIG: |
+        $$g_hostname = 'db-mysql';
+        $$g_db_type = 'mysqli';
+        $$g_database_name = 'mantis';
+        $$g_db_username = 'root';
+        $$g_db_password = 'mantis';
+        $$g_crypto_master_salt='2Dsjtn/rqqZPEy44vA9xN23l2i7js6KK2tXUre3nruzGq58zIwVNCLSty8ng35a60is03uQium8ag2pJnybUxA==';
+        $$g_log_level = LOG_EMAIL | LOG_EMAIL_RECIPIENT;
+        $$g_log_destination = '';
+        #$$g_show_detailed_errors = ON;
+    ports:
+      - "8080:80"
+    depends_on:
+      - db-mysql
+  db-mysql:
+    image: mysql:5.7
+    volumes:
+      - ./mantis-db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: mantis
+      MYSQL_DATABASE: mantis
+    restart: always

@@ -1,0 +1,1 @@
+./sonar-scanner/bin/sonar-scanner -Dproject.settings=./sonar-scanner/conf/sonar-scanner.spm365.properties
