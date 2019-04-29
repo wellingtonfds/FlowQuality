@@ -19,6 +19,7 @@ function init () {
         fi   
     else
         docker run --name zabbix-appliance -t \
+            -e PHP_TZ="America/Sao_Paulo" \
             -p 10051:10051 \
             -p 83:80 \
             -d zabbix/zabbix-appliance:latest ;
